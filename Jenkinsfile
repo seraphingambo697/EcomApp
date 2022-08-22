@@ -1,11 +1,16 @@
 node {
     stage('Clone') {
-        git 'https://github.com/seraphin-git/EcomProject.git'
+        checkout scm
     }
-    stage('Build') {
-        sh 'javac Main.java'
+    stage('Build image') {
+        app = docker.build("seraph/nginx")
    }
-   stage('Run') {
-        sh 'java Main'
+   stage('Run image') {
+        docker.image('seraph/ngnix').withRun('-p 80:80') { c -> 
+        
+        sh 'docker ps'
+        
+        sh 'curl localhost'
+        }
    }
 }
